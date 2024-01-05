@@ -24,8 +24,7 @@ const ExpenseList = () => {
   const [addNewModalVisible, setAddNewModalVisible] = React.useState(false)
   const [currentExpense, setCurrentExpense] = React.useState(null)
 
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXIiOnsiaWQiOjEsIm5hbWUiOiJIb2FuZyBWYW4gVHJ1bmciLCJlbWFpbCI6ImFuaHRydW5nMjQxMDJLQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJDIva0FGa3B3UDJiMXlRL2tWbGtKaXVGeHMwQ2ZtNVNPQWJwaUkvTnU0NGVKOC5Wd3g3MlJPIiwicGFzc3dvcmRDaGFuZ2VkQXQiOm51bGwsInBhc3N3b3JkQ29kZSI6bnVsbCwiY29kZVJlc2V0RXhwaXJlcyI6bnVsbCwic3RhdHVzIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDIzLTEyLTMxVDA2OjQ0OjAwLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTEyLTMxVDA2OjQ0OjAwLjAwMFoifX0sImlhdCI6MTcwNDAwNTA0NSwiZXhwIjoxNzA0NjA5ODQ1LCJqdGkiOiIxIn0.zXrpllICkUYXHzWLoG_xC8rqYU64U5YIh-xy59c0sxM'
-
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXIiOnsiaWQiOjksIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiIxQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJFpZS0xIS3RIeFFrM3pNcGhrc2dBUmVpdXdMa3dyci4zNEhUTFpyenlScDdua1o5V212UHVxIiwicGFzc3dvcmRDaGFuZ2VkQXQiOm51bGwsInBhc3N3b3JkQ29kZSI6bnVsbCwiY29kZVJlc2V0RXhwaXJlcyI6bnVsbCwic3RhdHVzIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDI0LTAxLTA1VDEyOjMxOjMxLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI0LTAxLTA1VDEyOjMxOjMxLjAwMFoifX0sImlhdCI6MTcwNDQ1NzkxNCwiZXhwIjoxNzA1MDYyNzE0LCJqdGkiOiI2In0.RC7YScC7fiUxuWd8V9CfPyXdn-kZEOu9O1h6dbLxqy4'
 
   const handleOpenModal = (expense) => {
     setCurrentExpense(expense)
@@ -42,12 +41,18 @@ const ExpenseList = () => {
     setDeleteModalVisible(true)
   } 
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const updateExpensesData = async () => {
+    try {
       const response = await getAllExpenses(token)
       setExpenses(response.data)
     }
-    fetchData()
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    updateExpensesData()
   }, [])
 
   return (
@@ -85,6 +90,7 @@ const ExpenseList = () => {
           }}
         >
           {
+            expenses &&
             expenses.map((expense) => {
               return (
                 <InforBox
@@ -139,6 +145,7 @@ const ExpenseList = () => {
         setModalVisible={setAddNewModalVisible}
         type="expense"
         token={token}
+        updateData={updateExpensesData}
       />
     </View>
   )

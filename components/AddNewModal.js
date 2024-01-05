@@ -1,4 +1,4 @@
-import {  Text, View, Modal, Pressable } from 'react-native'
+import {  Text, View, Modal, Pressable, Alert } from 'react-native'
 import React from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { Button } from 'react-native-elements'
@@ -27,16 +27,32 @@ const AddNewModal = (props) => {
         if (type === 'expense') {
             await addExpense(data, token)
             .then((res) => {
-                console.log(res)
+                switch (res.statusCode) {
+                    case 201:
+                        Alert.alert('Thêm khoản chi thành công')
+                        break;
+                    default:
+                        console.log(res)
+                        Alert.alert('Thêm khoản chi thất bại', res.error)
+                        break;
+                }
             })
         } else {
-            console.log(data)
             await addRevenue(data, token)
             .then((res) => {
-                console.log(res)
+                switch (res.statusCode) {
+                    case 201:
+                        Alert.alert('Thêm khoản thu thành công')
+                        break;
+                    default:
+                        console.log(res)
+                        Alert.alert('Thêm khoản thu thất bại', res.error)
+                        break;
+                }
             })
         }
-        props.setModalVisible(false)
+        await props.setModalVisible(false)
+        await props.updateData()
     }
 
     return (

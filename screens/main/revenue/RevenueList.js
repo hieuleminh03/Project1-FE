@@ -23,7 +23,7 @@ const RevenueList = () => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false)
   const [addNewModalVisible, setAddNewModalVisible] = React.useState(false)
   const [currentRevenue, setCurrentRevenue] = React.useState(null)
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXIiOnsiaWQiOjEsIm5hbWUiOiJMZSBNaW5oIEhpZXUiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkUDliWVFPZFNuMDloZXR6OXdZVGM3LlhuOXZnTFdyUjZ5aDVVODc2U2ZVenlUd3NURUlLV3UiLCJwYXNzd29yZENoYW5nZWRBdCI6bnVsbCwicGFzc3dvcmRDb2RlIjpudWxsLCJjb2RlUmVzZXRFeHBpcmVzIjpudWxsLCJzdGF0dXMiOnRydWUsImNyZWF0ZWRBdCI6IjIwMjQtMDEtMDRUMDg6MTA6MTkuMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDEtMDRUMDg6MTA6MTkuMDAwWiJ9fSwiaWF0IjoxNzA0MzU1ODM0LCJleHAiOjE3MDQ5NjA2MzQsImp0aSI6IjEifQ.BZFVVRegXrGbtYdKeCNbIqTre7moKKpmpl2pLlc96yc'
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXIiOnsiaWQiOjksIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiIxQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJFpZS0xIS3RIeFFrM3pNcGhrc2dBUmVpdXdMa3dyci4zNEhUTFpyenlScDdua1o5V212UHVxIiwicGFzc3dvcmRDaGFuZ2VkQXQiOm51bGwsInBhc3N3b3JkQ29kZSI6bnVsbCwiY29kZVJlc2V0RXhwaXJlcyI6bnVsbCwic3RhdHVzIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDI0LTAxLTA1VDEyOjMxOjMxLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI0LTAxLTA1VDEyOjMxOjMxLjAwMFoifX0sImlhdCI6MTcwNDQ1NzkxNCwiZXhwIjoxNzA1MDYyNzE0LCJqdGkiOiI2In0.RC7YScC7fiUxuWd8V9CfPyXdn-kZEOu9O1h6dbLxqy4'
 
   const handleOpenModal = (revenue) => {
     setCurrentRevenue(revenue)
@@ -38,15 +38,20 @@ const RevenueList = () => {
   const handleOpenDeleteModal = (revenue) => {
     setCurrentRevenue(revenue)
     setDeleteModalVisible(true)
-  } 
+  }
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const updateRevenuesData = async () => {
+    try {
       const response = await getAllRevenues(token)
-      console.log(response.data)
       setRevenues(response.data)
     }
-    fetchData()
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+      updateRevenuesData()
   }, [])
 
   return (
@@ -66,13 +71,13 @@ const RevenueList = () => {
           justifyContent: 'center',
         }}
       >
-        <Icon 
-        name="add-circle" 
-        size={40} 
-        color="black"
-        onPress={() => {
-          setAddNewModalVisible(true)
-        }}
+        <Icon
+          name="add-circle"
+          size={40}
+          color="black"
+          onPress={() => {
+            setAddNewModalVisible(true)
+          }}
         />
       </View>
       <ScrollView
@@ -83,29 +88,29 @@ const RevenueList = () => {
             paddingBottom: 15
           }}
         >
-        
+
           {
             revenues ?
-            revenues.map((revenue) => {
-              return (
-                <InforBox
-                  key={revenue.id}
-                  name={revenue.name}
-                  price={revenue.price}
-                  time={processTime(revenue.time)}
-                  func={() => {
-                    handleOpenModal(revenue)
-                  }}
-                  editFunc={() => {
-                    handleOpenEditModal(revenue)
-                  }}
-                  deleteFunc={() => {
-                    handleOpenDeleteModal(revenue)
-                  }}
+              revenues.map((revenue) => {
+                return (
+                  <InforBox
+                    key={revenue.id}
+                    name={revenue.name}
+                    price={revenue.price}
+                    time={processTime(revenue.time)}
+                    func={() => {
+                      handleOpenModal(revenue)
+                    }}
+                    editFunc={() => {
+                      handleOpenEditModal(revenue)
+                    }}
+                    deleteFunc={() => {
+                      handleOpenDeleteModal(revenue)
+                    }}
                   />
-              )
-            })
-            : null
+                )
+              })
+              : null
           }
         </View>
       </ScrollView>
@@ -141,6 +146,7 @@ const RevenueList = () => {
         setModalVisible={setAddNewModalVisible}
         type="revenue"
         token={token}
+        updateData={updateRevenuesData}
       />
     </View>
   )
