@@ -137,6 +137,9 @@ const ExpenseList = () => {
             modalVisible={deleteModalVisible}
             setModalVisible={setDeleteModalVisible}
             expense={currentExpense}
+            type="expense"
+            token={token}
+            updateData={updateExpensesData}
           />
           : null
       }

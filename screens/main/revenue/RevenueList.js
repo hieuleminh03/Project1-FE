@@ -138,6 +138,9 @@ const RevenueList = () => {
             modalVisible={deleteModalVisible}
             setModalVisible={setDeleteModalVisible}
             revenue={currentRevenue}
+            type="reve  nue"
+            token={token}
+            updateData={updateRevenuesData}
           />
           : null
       }

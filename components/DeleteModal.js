@@ -1,16 +1,55 @@
-import { StyleSheet, Text, View, Modal, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Modal, Pressable, Alert } from 'react-native'
+import React, { useEffect } from 'react'
 import { Button } from 'react-native-elements'
+
+import { deleteExpense, deleteRevenue } from '../api/main'
 
 
 const DeleteModal = (props) => {
-    const [data, setData] = React.useState(props.expense ? props.expense : props.revenue)
-    useEffect(() => {
-        setData(props.expense ? props.expense : props.revenue)
-    }, [props])
-
+    const token = props.token
+    const type = props.type
     if (!props.modalVisible) {
         return null
+    }
+    const handleDelete = async () => {
+        try {
+            const data = {
+                revenueId: null,
+                expenseId: null
+            }
+            if (type === 'expense') {
+                console.log(props.expense.id)
+                data.expenseId = Number(props.expense.id)
+                await deleteExpense(data, token)
+                    .then((res) => {
+                        switch (res.statusCode) {
+                            case 200:
+                                Alert.alert('Thành công','Xóa khoản tiêu dùng thành công')
+                                break;
+                            default:
+                                Alert.alert('Thất bại','Xóa khoản tiêu dùng thất bại')
+                                break;
+                        }
+                    })
+            } else {
+                data.revenueId = Number(props.revenue.id)
+                await deleteRevenue(data, token)
+                    .then((res) => {
+                        switch (res.statusCode) {
+                            case 200:
+                                Alert.alert('Thành công', 'Xóa khoản thu nhập thành công')
+                                break;
+                            default:
+                                Alert.alert('Thất bại', 'Xóa khoản thu nhập thất bại')
+                                break;
+                        }
+                    })
+            }
+            await props.setModalVisible(false)
+            await props.updateData()
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -89,10 +128,10 @@ const DeleteModal = (props) => {
                         <Button
                             title="Xác nhận"
                             type='solid'
-                            onPress={() => props.setModalVisible(false)}
+                            onPress={handleDelete}
                             buttonStyle={{
                                 width: '60%',
-                                backgroundColor:"red"
+                                backgroundColor: "red"
                             }}
                         >
                         </Button>

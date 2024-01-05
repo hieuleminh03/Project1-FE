@@ -13,7 +13,6 @@ const AddNewModal = (props) => {
     const [day, setDay] = React.useState('')
     const [month, setMonth] = React.useState('')
     const [year, setYear] = React.useState('')
-
     if (!props.modalVisible) {
         return null
     }
