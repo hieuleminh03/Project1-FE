@@ -50,6 +50,13 @@ const RevenueList = () => {
     }
   }
 
+  const resetModalData = () => {
+    setCurrentRevenue(null)
+    setModalVisible(false)
+    setEditModalVisible(false)
+    setDeleteModalVisible(false)
+  }
+
   useEffect(() => {
       updateRevenuesData()
   }, [])
@@ -129,6 +136,10 @@ const RevenueList = () => {
             modalVisible={editModalVisible}
             setModalVisible={setEditModalVisible}
             revenue={currentRevenue}
+            type="revenue"
+            token={token}
+            updateData={updateRevenuesData}
+            reset={resetModalData}
           />
           : null
       }

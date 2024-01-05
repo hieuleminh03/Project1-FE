@@ -1,19 +1,77 @@
-import { StyleSheet, Text, View, Modal, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Text, View, Modal, Pressable, Alert } from 'react-native'
+import React, { useEffect } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { Button } from 'react-native-elements'
 
+import { updateRevenue, updateExpense } from '../api/main'
+
 const EditModal = (props) => {
+    const type = props.type
+    const token = props.token
     const [data, setData] = React.useState(props.expense ? props.expense : props.revenue)
-    const [newName, setNewName] = React.useState('')
-    const [newPrice, setNewPrice] = React.useState(0)
+    const [newName, setNewName] = React.useState(props.expense ? props.expense.name : props.revenue.name)
+    const [newPrice, setNewPrice] = React.useState(props.expense ? props.expense.price : props.revenue.amount)
+    const [updateData, setUpdateData] = React.useState(null)
 
     useEffect(() => {
-        setData(props.expense ? props.expense : props.revenue) 
+        setData(props.expense ? props.expense : props.revenue)
     }, [props])
+
+    useEffect(() => {
+        console.log('reloaded')
+    }, [])
+
+    useEffect(() => {
+        setUpdateData({
+            name: newName,
+            price: newPrice,
+            amount: newPrice,
+            expenseId: type === 'expense' ? data.id : null,
+            revenueId: type === 'revenue' ? data.id : null,
+        })
+    }, [newName, newPrice])
 
     if (!props.modalVisible) {
         return null
+    }
+
+    const handleUpdate = async () => {
+        try {
+            console.log(data)
+            if (type === 'expense') {
+                await updateExpense(updateData, token)
+                    .then((res) => {
+                        switch (res.statusCode) {
+                            case 200:
+                                Alert.alert('Thành công', 'Cập nhật thành công')
+                                break;
+                            default:
+                                console.log(res)
+                                Alert.alert('Thất bại', 'Cập nhật thất bại')
+                                break;
+                        }
+                    })
+            } else {
+                await updateRevenue(updateData, token)
+                    .then((res) => {
+                        switch (res.statusCode) {
+                            case 200:
+                                Alert.alert('Thành công', 'Cập nhật thành công')
+                                break;
+                            default:
+                                console.log(res)
+                                Alert.alert('Thất bại', 'Cập nhật thất bại')
+                                break;
+                        }
+                    })
+            }
+            await props.setModalVisible(false)
+            await props.updateData()
+            await props.reset()
+        }
+        catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -90,6 +148,9 @@ const EditModal = (props) => {
                         }}
                         defaultValue={data.name}
                         maxLength={25}
+                        onChangeText={
+                            (text) => setNewName(text)
+                        }
                     >
                     </TextInput>
                     <Text
@@ -116,6 +177,9 @@ const EditModal = (props) => {
                         defaultValue={data.price ? data.price.toString() : data.amount.toString()}
                         maxLength={12}
                         keyboardType='numeric'
+                        onChangeText={
+                            (text) => setNewPrice(text)
+                        }
                     >
                     </TextInput>
                     <View
@@ -141,7 +205,7 @@ const EditModal = (props) => {
                         <Button
                             title="Lưu"
                             type='solid'
-                            onPress={() => props.setModalVisible(false)}
+                            onPress={handleUpdate}
                             buttonStyle={{
                                 width: '60%',
                             }}

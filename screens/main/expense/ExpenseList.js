@@ -51,6 +51,13 @@ const ExpenseList = () => {
     }
   }
 
+  const resetModalData = () => {
+    setCurrentExpense(null)
+    setModalVisible(false)
+    setEditModalVisible(false)
+    setDeleteModalVisible(false)
+  }
+
   useEffect(() => {
     updateExpensesData()
   }, [])
@@ -128,6 +135,10 @@ const ExpenseList = () => {
             modalVisible={editModalVisible}
             setModalVisible={setEditModalVisible}
             expense={currentExpense}
+            token={token}
+            updateData={updateExpensesData}
+            type="expense"
+            reset={resetModalData}
           />
           : null
       }

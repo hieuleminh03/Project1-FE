@@ -18,7 +18,6 @@ const DeleteModal = (props) => {
                 expenseId: null
             }
             if (type === 'expense') {
-                console.log(props.expense.id)
                 data.expenseId = Number(props.expense.id)
                 await deleteExpense(data, token)
                     .then((res) => {
