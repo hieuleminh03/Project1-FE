@@ -11,7 +11,6 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     // dữ liệu user này được sử dụng trong session hiện tại của app
     // dữ liệu user trong session này sẽ bị xóa khi app bị kill
-    // user thực sự sẽ được lưu trong AsyncStorage (username và password)
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 

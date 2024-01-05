@@ -3,21 +3,49 @@ import {
     Text,
     SafeAreaView,
     TextInput,
-    Button,
     TouchableOpacity,
+    Alert
 } from 'react-native';
 import React from 'react';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../../context/authContext';
 
+import { login } from '../../api/auth';
+
 import { useWindowDimensions } from 'react-native';
 
 export const Login = ({ navigation }) => {
 
+    const [userName, setUserName] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
     const window = useWindowDimensions();
 
     const auth = useAuth();
+
+    const handleLogin = async () => {
+        const data = {
+            email: userName,
+            password: password,
+        }
+        try {
+            const response = await login(data);
+            console.log(response);
+            if (response.statusCode === 200) {
+                Alert.alert('Thành công', 'Đăng nhập thành công');
+                const user = {
+                    token: response.text.accessToken,
+                }
+                console.log(user);
+                auth.setUser(user);
+            } else {
+                Alert.alert('Thất bại', 'Vui lòng kiểm tra lại thông tin đăng nhập');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <SafeAreaView
@@ -67,11 +95,11 @@ export const Login = ({ navigation }) => {
                             borderBottomColor: '#EDEDED',
                             marginHorizontal: 20,
                             marginVertical: 10,
-                            // above line on text input
                             fontSize: 15,
                             paddingBottom: 10,
-
+                            color: 'white',
                         }}
+                        onChangeText={text => setUserName(text)}
                     >
                     </TextInput>
                 </View>
@@ -94,11 +122,11 @@ export const Login = ({ navigation }) => {
                             borderBottomColor: '#EDEDED',
                             marginHorizontal: 20,
                             marginVertical: 10,
-                            // above line on text input
                             fontSize: 15,
                             paddingBottom: 10,
-
+                            color: 'white',
                         }}
+                        onChangeText={text => setPassword(text)}
                     >
                     </TextInput>
                     <View
@@ -117,6 +145,7 @@ export const Login = ({ navigation }) => {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                             }}
+                            onPress={handleLogin}
                         >
                             <Text style={{
                                 color: "#1D5461",

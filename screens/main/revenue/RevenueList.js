@@ -12,6 +12,8 @@ import { getAllRevenues } from '../../../api/main'
 import { useEffect } from 'react'
 import { Icon } from 'react-native-elements'
 
+import { useAuth } from '../../../context/authContext'
+
 function processTime(time) {
   const [year, month, day] = String(time).split('-')
   return `${day}/${month}/${year}`
@@ -23,8 +25,11 @@ const RevenueList = () => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false)
   const [addNewModalVisible, setAddNewModalVisible] = React.useState(false)
   const [currentRevenue, setCurrentRevenue] = React.useState(null)
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXIiOnsiaWQiOjksIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiIxQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJFpZS0xIS3RIeFFrM3pNcGhrc2dBUmVpdXdMa3dyci4zNEhUTFpyenlScDdua1o5V212UHVxIiwicGFzc3dvcmRDaGFuZ2VkQXQiOm51bGwsInBhc3N3b3JkQ29kZSI6bnVsbCwiY29kZVJlc2V0RXhwaXJlcyI6bnVsbCwic3RhdHVzIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDI0LTAxLTA1VDEyOjMxOjMxLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI0LTAxLTA1VDEyOjMxOjMxLjAwMFoifX0sImlhdCI6MTcwNDQ1NzkxNCwiZXhwIjoxNzA1MDYyNzE0LCJqdGkiOiI2In0.RC7YScC7fiUxuWd8V9CfPyXdn-kZEOu9O1h6dbLxqy4'
 
+  const auth = useAuth()
+
+  const token = auth.user.token
+  
   const handleOpenModal = (revenue) => {
     setCurrentRevenue(revenue)
     setModalVisible(true)

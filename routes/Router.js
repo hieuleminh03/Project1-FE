@@ -9,7 +9,7 @@ export const Router = () => {
     const { user } = useAuth();
     return (
         <NavigationContainer>
-            {!user ? <AppStack /> : <AuthStack />}
+            {user ? <AppStack /> : <AuthStack />}
         </NavigationContainer>
     );
 }

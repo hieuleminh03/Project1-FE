@@ -4,15 +4,15 @@ import {
     SafeAreaView,
     StyleSheet,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import React from 'react';
-
-import { useAuth } from '../../context/authContext';
-import COLORS from '../../constants/Color';
 import FormInput from '../../components/FormInput';
 
 const { width, height } = Dimensions.get("window");
+
+import { signUp } from '../../api/auth';
 
 export const Signup = ({ navigation }) => {
     const [name, setName] = React.useState('');
@@ -22,10 +22,40 @@ export const Signup = ({ navigation }) => {
 
     const [isShowPassword, setIsShowPassword] = React.useState(false);
     const [isShowConfirmPassword, setIsShowConfirmPassword] = React.useState(false);
-    const auth = useAuth();
 
-    const handleSignUp = () => {
-        console.log('handleSignUp');
+    const handleSignUp = async () => {
+        if (
+            name === '' ||
+            password === '' ||
+            confirmPassword === '' ||
+            gmail === ''
+        ) {
+            Alert.alert('Thất bại', 'Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+        if (password !== confirmPassword) {
+            Alert.alert('Thất bại', 'Mật khẩu không trùng khớp');
+            return;
+        }
+        const data = {
+            name: name,
+            email: gmail,
+            password: password,
+        }
+        console.log(data);
+        await signUp(data)
+            .then((response) => {
+                console.log(response);
+                if (response.statusCode === 201) {
+                    Alert.alert('Thành công', 'Đăng ký thành công');
+                    navigation.navigate('Login');
+                } else {
+                    Alert.alert('Thất bại', 'Vui lòng kiểm tra lại thông tin đăng ký');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
     const onPressShowPassword = () => {
         setIsShowPassword(!isShowPassword);
