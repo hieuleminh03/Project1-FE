@@ -48,19 +48,18 @@ export const signUp = async (data) => {
 }
 
 export const forgotPassword = async (data) => {
-    /*
-    data = {
-    "email":"anhtrung24102K@gmail.com"
-    }
-    */
+    console.log("data:")
     const response = await fetch(`${API_ENDPOINT}/api/auth/forgotPassword`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+            email: String(data)
+        }),
+
     });
-    return response.json();
+    return response;
 }
 
 export const logOut = async (token) => {

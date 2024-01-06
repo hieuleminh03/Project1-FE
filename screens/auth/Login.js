@@ -153,20 +153,30 @@ export const Login = ({ navigation }) => {
                             }}>Đăng nhập</Text>
                         </TouchableOpacity>
 
-                        <Text
-                            style={{
-                                paddingTop: 20,
-                                color: '#EDEDED',
-                                alignSelf: 'center',
-                                fontSize: 13,
-                            }}
-                            onPress={() => navigation.navigate('Signup')}
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          marginTop: 20,
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('ForgotPassword');
+                          }}
                         >
-                            Tạo tài khoản mới
-                        </Text>
+                          <Text style={{ color: 'white', fontWeight: 'bold' }}>Quên mật khẩu?</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('Signup');
+                          }}
+                        >
+                          <Text style={{ color: 'white', fontWeight: 'bold' }}>Đăng ký</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                 </View>
-
             </View>
         </SafeAreaView>
     );

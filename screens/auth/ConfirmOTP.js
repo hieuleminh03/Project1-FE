@@ -4,35 +4,31 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  Alert,
+  Alert
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import COLORS from '../../constants/Color';
 import { width, height } from '../../constants/DeviceSize';
 import FormInput from '../../components/Authen/FormInput';
 
-import { useState } from 'react';
-import { sendOTPMail } from '../../utils/Auth/sendOTPMail';
+import { checkCodeOTP } from '../../utils/Auth/checkCodeOTP';
 
-const ForgotPassword = ({ navigation }) => {
-  const [mail, setMail] = useState('');
+const ConfirmOTP = ({ route, navigation }) => {
+  const [OTP, setOTP] = useState('')
+  const { mail } = route.params;
 
-  const handleSendOTP = async () => {
-    if (mail === '') {
-      Alert.alert("Email trống", "Vui lòng nhập email để nhận mã OTP")
+  const handleCheckOTP = async () => {
+    if (OTP === '') {
+      Alert.alert("Mã OTP trống", "Vui lòng nhập mã OTP")
     } else {
-      try {
-        console.log(mail);
-        const res = await sendOTPMail(mail);
-        if (res.status === 'success') {
-          Alert.alert("Thành công", res.message)
-          navigation.navigate('ConfirmOTP', { mail: mail })
-        } else {
-          Alert.alert("Thất bại", res.message)
-        }
-      } catch (error) {
-        Alert.alert("Lỗi", error)
+      // call api check otp
+      const res = await checkCodeOTP(OTP, mail);
+      if (res.status === 'success') {
+        Alert.alert("Thành công", res.message)
+        navigation.navigate('ResetPassword', { mail: mail })
+      } else {
+        Alert.alert("Thất bại", res.message)
       }
     }
   }
@@ -45,10 +41,12 @@ const ForgotPassword = ({ navigation }) => {
           <Text style={styles.textTitle}>Quên mật khẩu</Text>
 
           <FormInput
-            topic="Email xác thực"
-            placeholder="Nhập email xác thực"
-            setValue={setMail}
+            topic="Mã xác thực"
+            placeholder="Nhập mã xác thực"
+            setValue={setOTP}
           />
+
+          <Text>Mã xác thực đã được gửi tới email.....</Text>
 
           <View
             style={{
@@ -60,9 +58,9 @@ const ForgotPassword = ({ navigation }) => {
           >
             <TouchableOpacity
               style={styles.buttonSingIn}
-              onPress={handleSendOTP}
+              onPress={handleCheckOTP}
             >
-              <Text style={{ color: COLORS.login.buttonSingIn }}>Tiếp tục</Text>
+              <Text style={{ color: COLORS.login.buttonSingIn }}>Xác nhận</Text>
             </TouchableOpacity>
           </View>
 
@@ -78,7 +76,7 @@ const ForgotPassword = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Login');
+                navigation.navigate('SignIn');
               }}
             >
               <Text
@@ -99,7 +97,7 @@ const ForgotPassword = ({ navigation }) => {
   );
 };
 
-export default ForgotPassword;
+export default ConfirmOTP;
 
 const styles = StyleSheet.create({
   imageBackground: {
