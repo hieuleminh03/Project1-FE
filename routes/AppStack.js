@@ -6,7 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import ExpenseList from '../screens/main/expense/ExpenseList';
 import RevenueList from '../screens/main/revenue/RevenueList';
-import { InforStack } from './inforStack/InforStack';
+import InforScreen from '../screens/main/infor/AdditionalInfor';
+
 
 
 import { useAuth } from '../context/authContext';
@@ -87,7 +88,7 @@ export const AppStack = () => {
                 />
                 <Drawer.Screen
                     name="Thống kê"
-                    component={InforStack}
+                    component={InforScreen}
                     options={{
                         drawerIcon: () => (
                             <Icon name="camera" size={24} color="grey" />
