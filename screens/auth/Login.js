@@ -127,6 +127,7 @@ export const Login = ({ navigation }) => {
                             color: 'white',
                         }}
                         onChangeText={text => setPassword(text)}
+                        secureTextEntry={true}
                     >
                     </TextInput>
                     <View

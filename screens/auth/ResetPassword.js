@@ -37,11 +37,15 @@ const ResetPassword = ({ route, navigation }) => {
     } else if (password !== confirmPassword) {
       Alert.alert('Mật khẩu không khớp', 'Vui lòng nhập lại mật khẩu');
     } else {
+      const data = {
+        email:mail,
+        newPassword:password
+      }
       // call api reset password
-      const res = await changePass(mail, password);
+      const res = await changePass(data);
       if (res.status === 'success') {
         Alert.alert('Thành công', res.message);
-        navigation.navigate('SignIn');
+        navigation.navigate('Login');
       } else {
         Alert.alert('Thất bại', res.message);
       }
@@ -50,7 +54,7 @@ const ResetPassword = ({ route, navigation }) => {
 
   return (
     <SafeAreaView>
-      <ImageBackgro
+      <ImageBackground
       >
         <View style={{ paddingLeft: width * 0.07 }}>
           <Text style={styles.textTitle}>Đặt lại mật khẩu</Text>
@@ -84,7 +88,7 @@ const ResetPassword = ({ route, navigation }) => {
               style={styles.buttonSingIn}
               onPress={handleResetPassword}
             >
-              <Text style={{ color: COLORS.login.buttonSingIn }}>Xác nhận</Text>
+              <Text style={{ color:'white' }}>Xác nhận</Text>
             </TouchableOpacity>
           </View>
 
@@ -95,18 +99,18 @@ const ResetPassword = ({ route, navigation }) => {
               width: width * 0.7,
             }}
           >
-            <Text style={{ color: COLORS.login.text }}>
+            <Text style={{ color: '#1D5461'}}>
               Bạn đã có tài khoản?
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('SignIn');
+                navigation.navigate('Login');
               }
               }
             >
               <Text
                 style={{
-                  color: COLORS.login.text,
+                  color: '#1D5461',
                   fontWeight: 'bold',
                   paddingLeft: 5,
                 }}
@@ -116,7 +120,7 @@ const ResetPassword = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </ImageBackgro>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: COLORS.login.text,
+    color: '#1D5461',
     marginBottom: 20,
   },
   buttonSingIn: {
@@ -144,6 +148,6 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     borderWidth: 1,
     elevation: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#1D5461',
   },
 });

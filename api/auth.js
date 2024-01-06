@@ -59,7 +59,7 @@ export const forgotPassword = async (data) => {
         }),
 
     });
-    return response;
+    return response.json();
 }
 
 export const logOut = async (token) => {

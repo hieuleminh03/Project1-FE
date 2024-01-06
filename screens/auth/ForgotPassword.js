@@ -25,6 +25,7 @@ const ForgotPassword = ({ navigation }) => {
       try {
         console.log(mail);
         const res = await sendOTPMail(mail);
+        console.log("res: ", res);
         if (res.status === 'success') {
           Alert.alert("Thành công", res.message)
           navigation.navigate('ConfirmOTP', { mail: mail })
@@ -62,7 +63,7 @@ const ForgotPassword = ({ navigation }) => {
               style={styles.buttonSingIn}
               onPress={handleSendOTP}
             >
-              <Text style={{ color: COLORS.login.buttonSingIn }}>Tiếp tục</Text>
+              <Text style={{ color: 'white' }}>Tiếp tục</Text>
             </TouchableOpacity>
           </View>
 
@@ -73,7 +74,7 @@ const ForgotPassword = ({ navigation }) => {
               width: width * 0.7,
             }}
           >
-            <Text style={{ color: COLORS.login.text }}>
+            <Text style={{ color: '#1D5461' }}>
               Bạn đã có tài khoản?
             </Text>
             <TouchableOpacity
@@ -83,7 +84,7 @@ const ForgotPassword = ({ navigation }) => {
             >
               <Text
                 style={{
-                  color: COLORS.login.text,
+                  color: '#1D5461',
                   fontWeight: 'bold',
                   paddingLeft: 5,
                 }}
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: COLORS.login.text,
+    color: '#1D5461',
     marginBottom: 20,
   },
   buttonSingIn: {
@@ -122,6 +123,6 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     borderWidth: 1,
     elevation: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#1D5461',
   },
 });

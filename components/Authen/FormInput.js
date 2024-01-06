@@ -30,13 +30,13 @@ const FormInput = props => {
         {props.category === 'password'
           ? props.statePassword === true
               ? <TouchableOpacity onPress={props.setIsShow}>
-                  <Ionicons name="eye" size={24} color={COLORS.login.text} />
+                  <Ionicons name="eye" size={24} color={'#1D5461'} />
                 </TouchableOpacity>
               : <TouchableOpacity onPress={props.setIsShow}>
                   <Ionicons
                     name="eye-off"
                     size={24}
-                    color={COLORS.login.text}
+                    color={'#1D5461'}
                   />
                 </TouchableOpacity>
           : null}
@@ -53,7 +53,7 @@ const styles = StyleSheet.create ({
     height: height * 0.05,
     width: width * 0.75,
     borderWidth: 1,
-    borderColor: COLORS.login.borderFormInput,
+    borderColor: '#1D5461',
     borderRadius: 10,
     marginTop: 10,
     marginBottom: 20,
@@ -65,6 +65,6 @@ const styles = StyleSheet.create ({
   topic: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: COLORS.login.text,
+    color: '#1D5461',
   },
 });

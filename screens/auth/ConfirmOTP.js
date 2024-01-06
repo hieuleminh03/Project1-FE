@@ -22,8 +22,11 @@ const ConfirmOTP = ({ route, navigation }) => {
     if (OTP === '') {
       Alert.alert("Mã OTP trống", "Vui lòng nhập mã OTP")
     } else {
-      // call api check otp
-      const res = await checkCodeOTP(OTP, mail);
+      const  data = {
+        email: mail,
+        verificationCode: OTP
+      }
+      const res = await checkCodeOTP(data);
       if (res.status === 'success') {
         Alert.alert("Thành công", res.message)
         navigation.navigate('ResetPassword', { mail: mail })
@@ -32,7 +35,6 @@ const ConfirmOTP = ({ route, navigation }) => {
       }
     }
   }
-
   return (
     <SafeAreaView>
       <ImageBackground
@@ -46,7 +48,7 @@ const ConfirmOTP = ({ route, navigation }) => {
             setValue={setOTP}
           />
 
-          <Text>Mã xác thực đã được gửi tới email.....</Text>
+          <Text style={{ color: '#1D5461'}}> Mã xác thực đã được gửi tới email.....</Text>
 
           <View
             style={{
@@ -60,7 +62,7 @@ const ConfirmOTP = ({ route, navigation }) => {
               style={styles.buttonSingIn}
               onPress={handleCheckOTP}
             >
-              <Text style={{ color: COLORS.login.buttonSingIn }}>Xác nhận</Text>
+              <Text style={{color:'white'}} >Xác nhận</Text>
             </TouchableOpacity>
           </View>
 
@@ -71,7 +73,7 @@ const ConfirmOTP = ({ route, navigation }) => {
               width: width * 0.7,
             }}
           >
-            <Text style={{ color: COLORS.login.text }}>
+            <Text style={{ color: '#1D5461' }}>
               Bạn đã có tài khoản?
             </Text>
             <TouchableOpacity
@@ -81,7 +83,7 @@ const ConfirmOTP = ({ route, navigation }) => {
             >
               <Text
                 style={{
-                  color: COLORS.login.text,
+                  color: '#1D5461',
                   fontWeight: 'bold',
                   paddingLeft: 5,
                 }}
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: COLORS.login.text,
+    color: '#1D5461',
     marginBottom: 20,
   },
   buttonSingIn: {
@@ -120,6 +122,6 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     borderWidth: 1,
     elevation: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#1D5461',
   },
 });

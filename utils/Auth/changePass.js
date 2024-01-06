@@ -2,9 +2,9 @@
 
 import { resetPassword } from "../../api/auth";
 
-export const changePass = async (mail, newPassword) => {
+export const changePass = async (data) => {
     try {
-        const response = await resetPassword(mail, newPassword);
+        const response = await resetPassword(data);
 
         switch (response.statusCode) {
             case 400:

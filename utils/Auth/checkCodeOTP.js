@@ -2,10 +2,10 @@
 
 import { checkCode } from "../../api/auth";
 
-export const checkCodeOTP = async (code, mail) => {
+export const checkCodeOTP = async (data) => {
     try {
-        const response = await checkCode(code, mail);
-        console.log(response.statusCode);
+
+        const response = await checkCode(data);
         switch (response.statusCode) {
             case 400:
                 // Bad request in body
