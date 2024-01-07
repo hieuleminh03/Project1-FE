@@ -11,7 +11,7 @@ import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../../context/authContext';
 
-import { login } from '../../api/auth';
+import { loginAndSaveUser } from '../../utils/Auth/loginAndSaveUser';
 
 import { useWindowDimensions } from 'react-native';
 
@@ -29,13 +29,15 @@ export const Login = ({ navigation }) => {
             email: userName,
             password: password,
         }
+
         try {
-            const response = await login(data);
+          console.log(data);
+            const response = await loginAndSaveUser(data);
             console.log(response);
-            if (response.statusCode === 200) {
+            if (response.status === "success") {
                 Alert.alert('Thành công', 'Đăng nhập thành công');
                 const user = {
-                    token: response.text.accessToken,
+                    token: response.userData.token,
                 }
                 console.log(user);
                 auth.setUser(user);

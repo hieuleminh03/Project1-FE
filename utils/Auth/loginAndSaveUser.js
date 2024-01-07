@@ -1,13 +1,13 @@
 // this function is used to login and save user in local storage
-import { logIn } from '../../api/auth';
-import { saveUserToLocal } from '../../services/local/dataStore';
+import { login } from "../../api/auth";
 
 /*
     Function làm việc với API và AsyncStorage
 */
-export const loginAndSaveUser = async (username, password) => {
+export const loginAndSaveUser = async (data) => {
     try {
-        const response = await logIn(username, password);
+        const response = await login(data);
+        console.log(data)
         switch (response.statusCode) {
             case 400:
                 // Bad request
@@ -19,13 +19,11 @@ export const loginAndSaveUser = async (username, password) => {
             case 200:
                 // success
                 // this works as a filter to pass only the token to saveUserToLocal and return it to _signIn
-                saveUserToLocal(username, password);
                 return { 
                     status: 'success', 
                     message: "Đăng nhập thành công!",
                     userData: {
-                        username: String(username),
-                        password: String(password),
+                        username: String(response.text.userData.name),
                         userId: String(response.text.userData.id),
                         token: String(response.text.accessToken)
                     }    
