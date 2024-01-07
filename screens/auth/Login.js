@@ -38,6 +38,7 @@ export const Login = ({ navigation }) => {
                 Alert.alert('Thành công', 'Đăng nhập thành công');
                 const user = {
                     token: response.userData.token,
+                    name: response.userData.username,
                 }
                 console.log(user);
                 auth.setUser(user);

@@ -29,6 +29,9 @@ const ExpenseList = () => {
   const auth = useAuth()
 
   const token = auth.user.token
+  // const name = auth.user.name
+
+
   
   const handleOpenModal = (expense) => {
     setCurrentExpense(expense)
@@ -83,6 +86,9 @@ const ExpenseList = () => {
           justifyContent: 'center',
         }}
       >
+        {/*<Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>*/}
+        {/*  {name}*/}
+        {/*</Text>*/}
         <Icon 
         name="add-circle" 
         size={40} 

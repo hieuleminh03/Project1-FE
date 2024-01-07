@@ -27,6 +27,7 @@ const RevenueList = () => {
   const [currentRevenue, setCurrentRevenue] = React.useState(null)
 
   const auth = useAuth()
+  // const name = auth.user.name
 
   const token = auth.user.token
   
@@ -73,6 +74,9 @@ const RevenueList = () => {
         backgroundColor: '#F5F5F5',
       }}
     >
+      {/*<Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>*/}
+      {/*  {name}*/}
+      {/*</Text>*/}
       <View
         style={{
           width: '100%',
