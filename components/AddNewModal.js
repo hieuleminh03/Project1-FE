@@ -1,4 +1,4 @@
-import {  Text, View, Modal, Pressable, Alert } from 'react-native'
+import { Text, View, Modal, Pressable, Alert, KeyboardAvoidingView } from 'react-native'
 import React from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { Button } from 'react-native-elements'
@@ -25,30 +25,30 @@ const AddNewModal = (props) => {
         }
         if (type === 'expense') {
             await addExpense(data, token)
-            .then((res) => {
-                switch (res.statusCode) {
-                    case 201:
-                        Alert.alert('Thêm khoản chi thành công')
-                        break;
-                    default:
-                        console.log(res)
-                        Alert.alert('Thêm khoản chi thất bại', res.error)
-                        break;
-                }
-            })
+                .then((res) => {
+                    switch (res.statusCode) {
+                        case 201:
+                            Alert.alert('Thêm khoản chi thành công')
+                            break;
+                        default:
+                            console.log(res)
+                            Alert.alert('Thêm khoản chi thất bại', res.error)
+                            break;
+                    }
+                })
         } else {
             await addRevenue(data, token)
-            .then((res) => {
-                switch (res.statusCode) {
-                    case 201:
-                        Alert.alert('Thêm khoản thu thành công')
-                        break;
-                    default:
-                        console.log(res)
-                        Alert.alert('Thêm khoản thu thất bại', res.error)
-                        break;
-                }
-            })
+                .then((res) => {
+                    switch (res.statusCode) {
+                        case 201:
+                            Alert.alert('Thêm khoản thu thành công')
+                            break;
+                        default:
+                            console.log(res)
+                            Alert.alert('Thêm khoản thu thất bại', res.error)
+                            break;
+                    }
+                })
         }
         await props.setModalVisible(false)
         await props.updateData()
@@ -63,6 +63,7 @@ const AddNewModal = (props) => {
             onRequestClose={() => {
                 props.setModalVisible(false);
             }}
+            accessibilityViewIsModal={true}
         >
             <Pressable
                 style={{
@@ -76,217 +77,226 @@ const AddNewModal = (props) => {
                 }}
                 onPress={() => props.setModalVisible(false)}
             />
-            <View
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={{
                     flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center'
                 }}
+                keyboardVerticalOffset={-58}
             >
                 <View
                     style={{
-                        maxWidth: 350,
-                        width: '100%',
-                        margin: 48,
-                        borderRadius: 20,
-                        backgroundColor: 'white',
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}
                 >
-                    <Text
-                        style={{
-                            margin: 15,
-                            fontWeight: 'bold',
-                            fontFamily: 'Roboto',
-                            fontSize: 18,
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            paddingVertical: 10
-                        }}
-                    >
-                        {type === 'expense' ? 'Thêm khoản chi' : 'Thêm khoản thu'}
-                    </Text>
-                    <Text
-                        style={{
-                            marginLeft: 35,
-                            fontSize: 10,
-                        }}
-                    >
-                        {type === 'expense' ? 'Tên khoản chi:' : 'Tên khoản thu:'}
-                    </Text>
-                    <TextInput
-                        style={{
-                            marginLeft: 24,
-                            marginRight: 24,
-                            marginBottom: 24,
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            fontSize: 16,
-                            borderBottomWidth: 1,
-                            borderColor: 'grey',
-                            paddingBottom: 5,
-                            width: '80%',
-                        }}
-                        maxLength={25}
-                        onChangeText={
-                            (text) => {
-                                setName(text)
-                            }
-                        }
-                    >
-                    </TextInput>
-                    <Text
-                        style={{
-                            marginLeft: 35,
-                            fontSize: 10,
-                        }}
-                    >
-                        Số tiền:
-                    </Text>
-                    <TextInput
-                        style={{
-                            marginLeft: 24,
-                            marginRight: 24,
-                            marginBottom: 24,
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            fontSize: 16,
-                            borderBottomWidth: 1,
-                            borderColor: 'grey',
-                            paddingBottom: 5,
-                            width: '80%',
-                        }}
-                        maxLength={12}
-                        keyboardType='numeric'
-                        onChangeText={
-                            (text) => {
-                                setAmount(Number(text))
-                            }
-                        }
-                    >
-                    </TextInput>
-                    <Text
-                        style={{
-                            marginLeft: 35,
-                            fontSize: 10,
-                        }}
-                    >
-                        Thời gian:
-                    </Text>
+
                     <View
                         style={{
-                            flexDirection: 'row',
+                            maxWidth: 350,
+                            width: '100%',
+                            margin: 48,
+                            borderRadius: 20,
+                            backgroundColor: 'white',
                         }}
                     >
-                        <TextInput
+                        <Text
+                            style={{
+                                margin: 15,
+                                fontWeight: 'bold',
+                                fontFamily: 'Roboto',
+                                fontSize: 18,
+                                flexDirection: 'row',
+                                alignSelf: 'center',
+                                paddingVertical: 10
+                            }}
+                        >
+                            {type === 'expense' ? 'Thêm khoản chi' : 'Thêm khoản thu'}
+                        </Text>
+                        <Text
                             style={{
                                 marginLeft: 35,
-                                marginRight: 10,
-                                marginBottom: 24,
-                                fontSize: 16,
-                                borderBottomWidth: 1,
-                                borderColor: 'grey',
-                                width: '20%',
-                                textAlign: 'center',
-                            }}
-                            maxLength={2}
-                            keyboardType='numeric'
-                            onChangeText={
-                                (text) => {
-                                    setDay(text)
-                                }
-                            }
-                        >
-                        </TextInput>
-                        <Text
-                            style={{
-                                fontSize: 24,
+                                fontSize: 10,
                             }}
                         >
-                            /
+                            {type === 'expense' ? 'Tên khoản chi:' : 'Tên khoản thu:'}
                         </Text>
                         <TextInput
                             style={{
-                                marginLeft: 5,
-                                marginRight: 10,
+                                marginLeft: 24,
+                                marginRight: 24,
                                 marginBottom: 24,
-                                fontSize: 16,
-                                borderBottomWidth: 1,
-                                borderColor: 'grey',
-                                width: '20%',
-                                textAlign: 'center',
-                            }}
-
-                            maxLength={2}
-                            keyboardType='numeric'
-                            onChangeText={
-                                (text) => {
-                                    setMonth(text)
-                                }
-                            }
-                        >
-                        </TextInput>
-                        <Text
-                            style={{
-                                fontSize: 24,
-                            }}
-                        >
-                            /
-                        </Text>
-                        <TextInput
-                            style={{
-                                marginLeft: 5,
-                                marginRight: 10,
-                                marginBottom: 24,
-                                fontSize: 16,
-                                borderBottomWidth: 1,
-                                borderColor: 'grey',
-                                width: '20%',
-                                textAlign: 'center',
-                            }}
-                            maxLength={4}
-                            keyboardType='numeric'
-                            onChangeText={
-                                (text) => {
-                                    setYear(text)
-                                }
-                            }
-                        >
-                        </TextInput>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: "space-evenly",
-                            alignItems: 'center',
-                            width: '100%',
-                            alignSelf: 'center',
-                            marginBottom: 24,
-                        }}
-                    >
-                        <Button
-                            title="Hủy"
-                            type="outline"
-                            onPress={() => props.setModalVisible(false)}
-                            buttonStyle={{
-                                width: '60%',
+                                flexDirection: 'row',
                                 alignSelf: 'center',
+                                fontSize: 16,
+                                borderBottomWidth: 1,
+                                borderColor: 'grey',
+                                paddingBottom: 5,
+                                width: '80%',
+                            }}
+                            maxLength={25}
+                            onChangeText={
+                                (text) => {
+                                    setName(text)
+                                }
+                            }
+                        >
+                        </TextInput>
+                        <Text
+                            style={{
+                                marginLeft: 35,
+                                fontSize: 10,
                             }}
                         >
-                        </Button>
-                        <Button
-                            title="Lưu"
-                            type='solid'
-                            buttonStyle={{
-                                width: '60%',
+                            Số tiền:
+                        </Text>
+                        <TextInput
+                            style={{
+                                marginLeft: 24,
+                                marginRight: 24,
+                                marginBottom: 24,
+                                flexDirection: 'row',
+                                alignSelf: 'center',
+                                fontSize: 16,
+                                borderBottomWidth: 1,
+                                borderColor: 'grey',
+                                paddingBottom: 5,
+                                width: '80%',
                             }}
-                            onPress={handleSave}
+                            maxLength={12}
+                            keyboardType='numeric'
+                            onChangeText={
+                                (text) => {
+                                    setAmount(Number(text))
+                                }
+                            }
                         >
-                        </Button>
-                    </View>
-                </View>
+                        </TextInput>
+                        <Text
+                            style={{
+                                marginLeft: 35,
+                                fontSize: 10,
+                            }}
+                        >
+                            Thời gian:
+                        </Text>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <TextInput
+                                style={{
+                                    marginLeft: 35,
+                                    marginRight: 10,
+                                    marginBottom: 24,
+                                    fontSize: 16,
+                                    borderBottomWidth: 1,
+                                    borderColor: 'grey',
+                                    width: '20%',
+                                    textAlign: 'center',
+                                }}
+                                maxLength={2}
+                                keyboardType='numeric'
+                                onChangeText={
+                                    (text) => {
+                                        setDay(text)
+                                    }
+                                }
+                            >
+                            </TextInput>
+                            <Text
+                                style={{
+                                    fontSize: 24,
+                                }}
+                            >
+                                /
+                            </Text>
+                            <TextInput
+                                style={{
+                                    marginLeft: 5,
+                                    marginRight: 10,
+                                    marginBottom: 24,
+                                    fontSize: 16,
+                                    borderBottomWidth: 1,
+                                    borderColor: 'grey',
+                                    width: '20%',
+                                    textAlign: 'center',
+                                }}
 
-            </View>
+                                maxLength={2}
+                                keyboardType='numeric'
+                                onChangeText={
+                                    (text) => {
+                                        setMonth(text)
+                                    }
+                                }
+                            >
+                            </TextInput>
+                            <Text
+                                style={{
+                                    fontSize: 24,
+                                }}
+                            >
+                                /
+                            </Text>
+                            <TextInput
+                                style={{
+                                    marginLeft: 5,
+                                    marginRight: 10,
+                                    marginBottom: 24,
+                                    fontSize: 16,
+                                    borderBottomWidth: 1,
+                                    borderColor: 'grey',
+                                    width: '20%',
+                                    textAlign: 'center',
+                                }}
+                                maxLength={4}
+                                keyboardType='numeric'
+                                onChangeText={
+                                    (text) => {
+                                        setYear(text)
+                                    }
+                                }
+                            >
+                            </TextInput>
+                        </View>
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: "space-evenly",
+                                alignItems: 'center',
+                                width: '100%',
+                                alignSelf: 'center',
+                                marginBottom: 24,
+                            }}
+                        >
+                            <Button
+                                title="Hủy"
+                                type="outline"
+                                onPress={() => props.setModalVisible(false)}
+                                buttonStyle={{
+                                    width: '60%',
+                                    alignSelf: 'center',
+                                }}
+                            >
+                            </Button>
+                            <Button
+                                title="Lưu"
+                                type='solid'
+                                buttonStyle={{
+                                    width: '60%',
+                                }}
+                                onPress={handleSave}
+                            >
+                            </Button>
+                        </View>
+                    </View>
+
+                </View>
+            </KeyboardAvoidingView >
         </Modal>
     )
 }

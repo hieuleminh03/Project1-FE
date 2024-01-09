@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ToggleButton = () => {
-  const [selectedChoice, setSelectedChoice] = useState('day');
+const ToggleButton = (props) => {
+  const { func, refreshKey } = props
+  const [selectedChoice, setSelectedChoice] = useState(null);
 
   const handleToggle = (choice) => {
     setSelectedChoice(choice);
+    func(choice)
   };
+
+  useEffect(() => {
+    setSelectedChoice(null)
+  }, [refreshKey])
 
   return (
     <View style={styles.container}>

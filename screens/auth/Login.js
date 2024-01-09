@@ -4,19 +4,18 @@ import {
     SafeAreaView,
     TextInput,
     TouchableOpacity,
-    Alert
+    Alert,
+    ActivityIndicator
 } from 'react-native';
 import React from 'react';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../../context/authContext';
-
 import { loginAndSaveUser } from '../../utils/Auth/loginAndSaveUser';
-
 import { useWindowDimensions } from 'react-native';
 
 export const Login = ({ navigation }) => {
-
+    const [loading, setLoading] = React.useState(false);
     const [userName, setUserName] = React.useState('');
     const [password, setPassword] = React.useState('');
 
@@ -25,27 +24,28 @@ export const Login = ({ navigation }) => {
     const auth = useAuth();
 
     const handleLogin = async () => {
+        setLoading(true);
         const data = {
             email: userName,
             password: password,
         }
 
         try {
-          console.log(data);
             const response = await loginAndSaveUser(data);
-            console.log(response);
             if (response.status === "success") {
-                Alert.alert('Thành công', 'Đăng nhập thành công');
                 const user = {
                     token: response.userData.token,
+                    userName: response.userData.username,
+                    email: userName
                 }
-                console.log(user);
                 auth.setUser(user);
             } else {
                 Alert.alert('Thất bại', 'Vui lòng kiểm tra lại thông tin đăng nhập');
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -61,7 +61,7 @@ export const Login = ({ navigation }) => {
             <View
                 style={{
                     // full width but padding on left and right
-                    height: window.height * 0.51,
+                    height: window.height * 0.57,
                     width: window.width * 0.95,
                     backgroundColor: '#1D5461',
                     borderRadius: 20,
@@ -71,10 +71,10 @@ export const Login = ({ navigation }) => {
                     style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                        marginTop: 50,
+                        marginTop: 40,
                     }}
                 >
-                    <Ionicons name="wallet-outline" size={60} color="#EDEDED" />
+                    <Ionicons name="wallet-outline" size={100} color="#EDEDED" />
                 </View>
                 <View
                     style={{
@@ -140,44 +140,55 @@ export const Login = ({ navigation }) => {
                             alignSelf: 'center',
                         }}
                     >
-                        <TouchableOpacity
-                            style={{
-                                height: 40,
-                                backgroundColor: '#EDEDED',
-                                borderRadius: 10,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                            onPress={handleLogin}
-                        >
-                            <Text style={{
-                                color: "#1D5461",
-                                fontSize: 15,
-                            }}>Đăng nhập</Text>
-                        </TouchableOpacity>
+                        {
+                            <TouchableOpacity
+                                style={{
+                                    height: 40,
+                                    backgroundColor: '#EDEDED',
+                                    borderRadius: 10,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                                onPress={handleLogin}
+                            >
+                                {
+                                    loading ?
+                                        (<ActivityIndicator size="small" color="#1D5461" />)
+                                        :
+                                        (<Text style={{
+                                            color: "#1D5461",
+                                            fontSize: 15,
+                                        }}>Đăng nhập</Text>)
+                                }
 
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginTop: 20,
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate('ForgotPassword');
-                          }}
+                            </TouchableOpacity>}
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                marginTop: 18,
+                                alignItems: 'center',
+                                height: 40,
+                            }}
                         >
-                          <Text style={{ color: 'white', fontWeight: 'bold' }}>Quên mật khẩu?</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate('Signup');
-                          }}
-                        >
-                          <Text style={{ color: 'white', fontWeight: 'bold' }}>Đăng ký</Text>
-                        </TouchableOpacity>
-                      </View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('ForgotPassword');
+                                }}
+                                style={{ marginRight: 20 }}
+                            >
+                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Quên mật khẩu?</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('Signup');
+                                }}
+                                style={{ marginLeft: 20 }}
+                            >
+                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Đăng ký</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

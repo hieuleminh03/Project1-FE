@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  ActivityIndicator
 } from 'react-native';
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
@@ -16,6 +17,7 @@ import { useState } from 'react';
 import { sendOTPMail } from '../../utils/Auth/sendOTPMail';
 
 const ForgotPassword = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   const [mail, setMail] = useState('');
 
   const handleSendOTP = async () => {
@@ -39,7 +41,13 @@ const ForgotPassword = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#EDEDED',
+      }}
+    >
       <ImageBackground
       >
         <View style={{ paddingLeft: width * 0.07 }}>
@@ -53,17 +61,25 @@ const ForgotPassword = ({ navigation }) => {
 
           <View
             style={{
-              width: width * 0.75,
+              width: width * 0.83,
               justifyContent: 'center',
               alignItems: 'flex-end',
-              marginVertical: 20,
+              marginBottom: 20,
             }}
           >
             <TouchableOpacity
               style={styles.buttonSingIn}
               onPress={handleSendOTP}
             >
-              <Text style={{ color: 'white' }}>Tiếp tục</Text>
+              {
+                loading ?
+                  (
+                    <ActivityIndicator size="small" color="white" />
+                  ) : (
+                    <Text style={{ color: 'white' }}>Tiếp tục</Text>
+                  )
+              }
+
             </TouchableOpacity>
           </View>
 
@@ -71,7 +87,7 @@ const ForgotPassword = ({ navigation }) => {
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
-              width: width * 0.7,
+              paddingRight: width * 0.1,
             }}
           >
             <Text style={{ color: '#1D5461' }}>

@@ -7,7 +7,6 @@ import { login } from "../../api/auth";
 export const loginAndSaveUser = async (data) => {
     try {
         const response = await login(data);
-        console.log(data)
         switch (response.statusCode) {
             case 400:
                 // Bad request

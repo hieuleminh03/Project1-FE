@@ -48,7 +48,6 @@ export const signUp = async (data) => {
 }
 
 export const forgotPassword = async (data) => {
-    console.log("data:")
     const response = await fetch(`${API_ENDPOINT}/api/auth/forgotPassword`, {
         method: 'POST',
         headers: {

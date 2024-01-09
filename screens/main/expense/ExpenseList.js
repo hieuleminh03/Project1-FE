@@ -18,13 +18,17 @@ function processTime(time) {
   const [year, month, day] = String(time).split('-')
   return `${day}/${month}/${year}`
 }
-const ExpenseList = () => {
+const ExpenseList = ({ refreshKey }) => {
   const [expenses, setExpenses] = React.useState([])
   const [modalVisible, setModalVisible] = React.useState(false)
   const [editModalVisible, setEditModalVisible] = React.useState(false)
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false)
   const [addNewModalVisible, setAddNewModalVisible] = React.useState(false)
   const [currentExpense, setCurrentExpense] = React.useState(null)
+
+  useEffect(() => {
+    updateExpensesData()
+  }, [refreshKey])
 
   const auth = useAuth()
 
@@ -46,9 +50,17 @@ const ExpenseList = () => {
   } 
 
   const updateExpensesData = async () => {
+    setExpenses([])
     try {
       const response = await getAllExpenses(token)
-      setExpenses(response.data)
+      if (response.error) {return};
+      if (response.data.length < 20) {
+      for (let i = 0; i < response.data.length; i++) {
+        setExpenses(prev => [...prev, response.data[i]])
+        await new Promise(resolve => setTimeout(resolve, 4))
+      }} else {
+        setExpenses(response.data)
+      }
     }
     catch (error) {
       console.log(error)
@@ -61,10 +73,6 @@ const ExpenseList = () => {
     setEditModalVisible(false)
     setDeleteModalVisible(false)
   }
-
-  useEffect(() => {
-    updateExpensesData()
-  }, [])
 
   return (
     <View

@@ -42,7 +42,6 @@ export const Signup = ({ navigation }) => {
             email: gmail,
             password: password,
         }
-        console.log(data);
         await signUp(data)
             .then((response) => {
                 console.log(response);

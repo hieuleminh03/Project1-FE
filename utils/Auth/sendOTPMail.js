@@ -3,7 +3,6 @@ import { forgotPassword } from "../../api/auth";
 
 export const sendOTPMail = async (email) => {
     try {
-        console.log("response.statusCode");
         const response = await forgotPassword(email);
         switch (response.statusCode) {
             case 400:

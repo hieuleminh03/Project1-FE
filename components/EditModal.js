@@ -1,4 +1,4 @@
-import { Text, View, Modal, Pressable, Alert } from 'react-native'
+import { Text, View, Modal, Pressable, Alert, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { Button } from 'react-native-elements'
@@ -18,10 +18,6 @@ const EditModal = (props) => {
     }, [props])
 
     useEffect(() => {
-        console.log('reloaded')
-    }, [])
-
-    useEffect(() => {
         setUpdateData({
             name: newName,
             price: newPrice,
@@ -37,7 +33,6 @@ const EditModal = (props) => {
 
     const handleUpdate = async () => {
         try {
-            console.log(data)
             if (type === 'expense') {
                 await updateExpense(updateData, token)
                     .then((res) => {
@@ -96,125 +91,131 @@ const EditModal = (props) => {
                 }}
                 onPress={() => props.setModalVisible(false)}
             />
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={{ flex: 1 }}
+                keyboardVerticalOffset={-80}
             >
                 <View
                     style={{
-                        maxWidth: 350,
-                        width: '100%',
-                        margin: 48,
-                        borderRadius: 20,
-                        backgroundColor: 'white',
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}
                 >
-                    <Text
-                        style={{
-                            margin: 15,
-                            fontWeight: 'bold',
-                            fontFamily: 'Roboto',
-                            fontSize: 18,
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            paddingVertical: 10
-                        }}
-                    >
-                        {props.expense ? 'Chỉnh sửa khoản chi' : 'Chỉnh sửa khoản thu'}
-                    </Text>
-                    <Text
-                        style={{
-                            marginLeft: 35,
-                            fontSize: 10,
-                        }}
-                    >
-                        {props.expense ? 'Tên khoản chi' : 'Tên khoản thu'}
-                    </Text>
-                    <TextInput
-                        style={{
-                            marginLeft: 24,
-                            marginRight: 24,
-                            marginBottom: 24,
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            fontSize: 16,
-                            borderBottomWidth: 1,
-                            borderColor: 'grey',
-                            paddingBottom: 5,
-                            width: '80%',
-                        }}
-                        defaultValue={data.name}
-                        maxLength={25}
-                        onChangeText={
-                            (text) => setNewName(text)
-                        }
-                    >
-                    </TextInput>
-                    <Text
-                        style={{
-                            marginLeft: 35,
-                            fontSize: 10,
-                        }}
-                    >
-                        Số tiền:
-                    </Text>
-                    <TextInput
-                        style={{
-                            marginLeft: 24,
-                            marginRight: 24,
-                            marginBottom: 24,
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            fontSize: 16,
-                            borderBottomWidth: 1,
-                            borderColor: 'grey',
-                            paddingBottom: 5,
-                            width: '80%',
-                        }}
-                        defaultValue={data.price ? data.price.toString() : data.amount.toString()}
-                        maxLength={12}
-                        keyboardType='numeric'
-                        onChangeText={
-                            (text) => setNewPrice(text)
-                        }
-                    >
-                    </TextInput>
                     <View
                         style={{
-                            flexDirection: 'row',
-                            justifyContent: "space-evenly",
-                            alignItems: 'center',
+                            maxWidth: 350,
                             width: '100%',
-                            alignSelf: 'center',
-                            marginBottom: 24,
+                            margin: 48,
+                            borderRadius: 20,
+                            backgroundColor: 'white',
                         }}
                     >
-                        <Button
-                            title="Hủy"
-                            type="outline"
-                            onPress={() => props.setModalVisible(false)}
-                            buttonStyle={{
-                                width: '60%',
+                        <Text
+                            style={{
+                                margin: 15,
+                                fontWeight: 'bold',
+                                fontFamily: 'Roboto',
+                                fontSize: 18,
+                                flexDirection: 'row',
                                 alignSelf: 'center',
+                                paddingVertical: 10
                             }}
                         >
-                        </Button>
-                        <Button
-                            title="Lưu"
-                            type='solid'
-                            onPress={handleUpdate}
-                            buttonStyle={{
-                                width: '60%',
+                            {props.expense ? 'Chỉnh sửa khoản chi' : 'Chỉnh sửa khoản thu'}
+                        </Text>
+                        <Text
+                            style={{
+                                marginLeft: 35,
+                                fontSize: 10,
                             }}
                         >
-                        </Button>
+                            {props.expense ? 'Tên khoản chi' : 'Tên khoản thu'}
+                        </Text>
+                        <TextInput
+                            style={{
+                                marginLeft: 24,
+                                marginRight: 24,
+                                marginBottom: 24,
+                                flexDirection: 'row',
+                                alignSelf: 'center',
+                                fontSize: 16,
+                                borderBottomWidth: 1,
+                                borderColor: 'grey',
+                                paddingBottom: 5,
+                                width: '80%',
+                            }}
+                            defaultValue={data.name}
+                            maxLength={25}
+                            onChangeText={
+                                (text) => setNewName(text)
+                            }
+                        >
+                        </TextInput>
+                        <Text
+                            style={{
+                                marginLeft: 35,
+                                fontSize: 10,
+                            }}
+                        >
+                            Số tiền:
+                        </Text>
+                        <TextInput
+                            style={{
+                                marginLeft: 24,
+                                marginRight: 24,
+                                marginBottom: 24,
+                                flexDirection: 'row',
+                                alignSelf: 'center',
+                                fontSize: 16,
+                                borderBottomWidth: 1,
+                                borderColor: 'grey',
+                                paddingBottom: 5,
+                                width: '80%',
+                            }}
+                            defaultValue={data.price ? data.price.toString() : data.amount.toString()}
+                            maxLength={12}
+                            keyboardType='numeric'
+                            onChangeText={
+                                (text) => setNewPrice(text)
+                            }
+                        >
+                        </TextInput>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: "space-evenly",
+                                alignItems: 'center',
+                                width: '100%',
+                                alignSelf: 'center',
+                                marginBottom: 24,
+                            }}
+                        >
+                            <Button
+                                title="Hủy"
+                                type="outline"
+                                onPress={() => props.setModalVisible(false)}
+                                buttonStyle={{
+                                    width: '60%',
+                                    alignSelf: 'center',
+                                }}
+                            >
+                            </Button>
+                            <Button
+                                title="Lưu"
+                                type='solid'
+                                onPress={handleUpdate}
+                                buttonStyle={{
+                                    width: '60%',
+                                }}
+                            >
+                            </Button>
+                        </View>
                     </View>
-                </View>
 
-            </View>
+                </View>
+            </KeyboardAvoidingView>
         </Modal>
     )
 }

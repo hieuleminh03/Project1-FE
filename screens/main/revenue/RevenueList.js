@@ -18,13 +18,18 @@ function processTime(time) {
   const [year, month, day] = String(time).split('-')
   return `${day}/${month}/${year}`
 }
-const RevenueList = () => {
+
+const RevenueList = ({ refreshKey }) => {
   const [revenues, setRevenues] = React.useState([])
   const [modalVisible, setModalVisible] = React.useState(false)
   const [editModalVisible, setEditModalVisible] = React.useState(false)
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false)
   const [addNewModalVisible, setAddNewModalVisible] = React.useState(false)
   const [currentRevenue, setCurrentRevenue] = React.useState(null)
+
+  useEffect(() => {
+    updateRevenuesData()
+  }, [refreshKey])
 
   const auth = useAuth()
 
@@ -46,9 +51,17 @@ const RevenueList = () => {
   }
 
   const updateRevenuesData = async () => {
+    setRevenues([])
     try {
       const response = await getAllRevenues(token)
-      setRevenues(response.data)
+      if (response.error) {return};
+      if (response.data.length < 20) {
+      for (let i = 0; i < response.data.length; i++) {
+        setRevenues(prev => [...prev, response.data[i]])
+        await new Promise(resolve => setTimeout(resolve, 4))
+      }} else {
+        setRevenues(response.data)
+      }
     }
     catch (error) {
       console.log(error)
@@ -61,10 +74,6 @@ const RevenueList = () => {
     setEditModalVisible(false)
     setDeleteModalVisible(false)
   }
-
-  useEffect(() => {
-      updateRevenuesData()
-  }, [])
 
   return (
     <View

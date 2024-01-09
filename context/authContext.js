@@ -14,10 +14,6 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        console.log('user in session (authContext): ', user);
-    }, [user]);
-
     const value = {
         user,
         loading,

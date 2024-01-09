@@ -51,7 +51,7 @@ export default FormInput;
 const styles = StyleSheet.create ({
   input: {
     height: height * 0.05,
-    width: width * 0.75,
+    width: width * 0.83,
     borderWidth: 1,
     borderColor: '#1D5461',
     borderRadius: 10,
